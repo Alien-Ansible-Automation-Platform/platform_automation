@@ -1,27 +1,27 @@
 ---
 - name: Get system info (CPU, Memory, Disk)
   hosts: all
-  become: yes
   gather_facts: yes
+  become: yes
+
   tasks:
-    - name: Ensure we are targeting correct host
-      debug:
-        msg: "Running on {{ inventory_hostname }} (Expected: {{ target_host }} - {{ target_ip }})"
 
-    - name: Show CPU Info
+    - name: Show host identity
       debug:
-        msg: >
-          Host: {{ inventory_hostname }}
-          CPU Cores: {{ ansible_facts.processor_vcpus }}
-          Architecture: {{ ansible_facts.architecture }}
+        msg: "Running on {{ inventory_hostname }} (IP: {{ ansible_host | default('N/A') }})"
 
-    - name: Show Memory Info
+    - name: CPU information
       debug:
-        msg: >
-          Total Memory: {{ ansible_facts.memtotal_mb }} MB
-          Free Memory: {{ ansible_facts.memfree_mb }} MB
+        msg:
+          - "CPU Cores: {{ ansible_facts.processor_vcpus }}"
+          - "Architecture: {{ ansible_facts.architecture }}"
 
-    - name: Show Disk Partitions
+    - name: Memory information
       debug:
-        msg: >
-          Partitions: {{ ansible_facts.mounts }}
+        msg:
+          - "Total Memory: {{ ansible_facts.memtotal_mb }} MB"
+          - "Free Memory: {{ ansible_facts.memfree_mb }} MB"
+
+    - name: Disk / Mount information
+      debug:
+        msg: "{{ ansible_facts.mounts }}"
