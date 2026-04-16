@@ -1,0 +1,23 @@
+---
+- name: Gather system information
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  tasks:
+
+    - name: Show CPU Info
+      debug:
+        msg: >
+          CPU Cores: {{ ansible_facts.processor_vcpus }},
+          Architecture: {{ ansible_facts.architecture }}
+
+    - name: Show Memory Info
+      debug:
+        msg: >
+          Total Memory: {{ ansible_facts.memtotal_mb }} MB,
+          Free Memory: {{ ansible_facts.memfree_mb }} MB
+
+    - name: Show Disk Partitions
+      debug:
+        var: ansible_facts.mounts
