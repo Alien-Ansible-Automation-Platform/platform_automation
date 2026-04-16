@@ -1,23 +1,34 @@
 ---
-- name: Gather system information
+- name: Get system info (CPU, Memory, Disk)
   hosts: all
   become: yes
   gather_facts: yes
 
+  vars:
+    target_host: xyz
+    target_ip: 1.1.1.1
+    ansible_user: ec2-user   # change if needed
+
   tasks:
+
+    - name: Ensure we are targeting correct host
+      debug:
+        msg: "Running on {{ inventory_hostname }} (Expected: {{ target_host }} - {{ target_ip }})"
 
     - name: Show CPU Info
       debug:
         msg: >
-          CPU Cores: {{ ansible_facts.processor_vcpus }},
+          Host: {{ inventory_hostname }}
+          CPU Cores: {{ ansible_facts.processor_vcpus }}
           Architecture: {{ ansible_facts.architecture }}
 
     - name: Show Memory Info
       debug:
         msg: >
-          Total Memory: {{ ansible_facts.memtotal_mb }} MB,
+          Total Memory: {{ ansible_facts.memtotal_mb }} MB
           Free Memory: {{ ansible_facts.memfree_mb }} MB
 
     - name: Show Disk Partitions
       debug:
-        var: ansible_facts.mounts
+        msg: >
+          Partitions: {{ ansible_facts.mounts }}
