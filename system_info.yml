@@ -3,14 +3,7 @@
   hosts: all
   become: yes
   gather_facts: yes
-
-  vars:
-    target_host: xyz
-    target_ip: 1.1.1.1
-    ansible_user: ec2-user   # change if needed
-
   tasks:
-
     - name: Ensure we are targeting correct host
       debug:
         msg: "Running on {{ inventory_hostname }} (Expected: {{ target_host }} - {{ target_ip }})"
