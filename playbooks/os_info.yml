@@ -1,0 +1,19 @@
+---
+- name: Collect system info (structured)
+  hosts: all
+  gather_facts: yes
+
+  tasks:
+
+    - name: Build system info dictionary
+      set_fact:
+        system_info:
+          hostname: "{{ ansible_facts.hostname }}"
+          fqdn: "{{ ansible_facts.fqdn }}"
+          ip: "{{ ansible_facts.default_ipv4.address | default('N/A') }}"
+          os: "{{ ansible_facts.distribution }} {{ ansible_facts.distribution_version }}"
+          kernel: "{{ ansible_facts.kernel }}"
+
+    - name: Print system info
+      debug:
+        var: system_info
